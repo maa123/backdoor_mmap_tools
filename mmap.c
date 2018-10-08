@@ -33,7 +33,7 @@
 #define MADV_MERGEABLE 12
 #endif
 
-extern void*  __mmap2(void*, size_t, int, int, int, size_t);
+//extern void*  __mmap2(void*, size_t, int, int, int, size_t);
 
 static void *free_address = (void *)0x10000000;
 
@@ -52,7 +52,7 @@ void* mmap(void *addr, size_t size, int prot, int flags, int fd, long offset)
       free_address += size;
     }
 
-    ret = __mmap2(addr, size, prot, flags, fd, (size_t)offset >> MMAP2_SHIFT);
+    ret = mmap(addr, size, prot, flags, fd, (size_t)offset >> MMAP2_SHIFT);
 
     if (ret && (flags & (MAP_PRIVATE | MAP_ANONYMOUS)))
 	    madvise(ret, size, MADV_MERGEABLE);
